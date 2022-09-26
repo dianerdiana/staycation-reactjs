@@ -7,7 +7,7 @@ export default function PageDetailDescription({ data }) {
       <h4>About the place</h4>
       {parser(data.description)}
       <div className="row" style={{ marginTop: 30 }}>
-        {data.features.map((feature, index) => {
+        {data.featureId.map((feature, index) => {
           return (
             <div
               key={`feature-${index}`}
@@ -17,7 +17,7 @@ export default function PageDetailDescription({ data }) {
               <img
                 width="38"
                 className="d-block mb-2"
-                src={feature.imageUrl}
+                src={`${process.env.REACT_APP_URL_HOST}/${feature.imageUrl}`}
                 alt={feature.name}
               />{' '}
               <span>{feature.qty} </span>

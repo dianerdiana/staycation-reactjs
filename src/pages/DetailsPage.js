@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Fade from 'react-reveal/Fade'
-import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import Header from 'components/Header'
 import PageDetailTitle from 'components/PageDetailTitle'
@@ -16,48 +16,61 @@ import Footer from 'components/Footer'
 
 // import store
 import { checkoutBooking } from '../store/actions/checkout'
+import { fetchPage } from '../store/actions/page'
 
-class DetailsPage extends Component {
-  componentDidMount() {
-    window.title = 'Details Page'
-    window.scrollTo(0, 0)
-  }
+import { useDispatch, useSelector } from 'react-redux'
 
-  render() {
-    const breadcrumb = [
-      { pageTitle: 'Home', pageHref: '' },
-      { pageTitle: 'House Details', pageHref: '' }
-    ]
+const DetailsPage = (props) => {
+  const { id } = useParams()
+  const dispatch = useDispatch()
+  const itemDetails = useSelector((state) => state.page.detailPage)
 
-    return (
-      <>
-        <Header {...this.props} />
-        <PageDetailTitle breadcrumb={breadcrumb} data={ItemDetails} />
-        <FeaturedImage data={ItemDetails.imageUrls} />
-        <section className="container">
-          <div className="row">
-            <div className="col-7 pr-5">
-              <Fade bottom>
-                <PageDetailDescription data={ItemDetails} />
-              </Fade>
-            </div>
-            <div className="col-5">
-              <Fade bottom>
-                <BookingForm
-                  itemDetails={ItemDetails}
-                  startBooking={this.props.checkoutBooking}
-                />
-              </Fade>
-            </div>
-          </div>
-        </section>
+  const [loading, setLoading] = useState(true)
 
-        <Categories data={ItemDetails.categories} />
-        <Testimony data={ItemDetails.testimonial} />
-        <Footer></Footer>
-      </>
+  const breadcrumb = [
+    { pageTitle: 'Home', pageHref: '' },
+    { pageTitle: 'House Details', pageHref: '' }
+  ]
+
+  useEffect(() => {
+    document.title = `Details Page | ${itemDetails?.title}`
+    setLoading(true)
+    dispatch(fetchPage(`/detail-page/${id}`, 'detailPage')).then(() =>
+      setLoading(false)
     )
+  }, [])
+
+  if (loading) {
+    return <div className="spinner"></div>
   }
+  return (
+    <>
+      <Header {...props} />
+      <PageDetailTitle breadcrumb={breadcrumb} data={itemDetails} />
+      <FeaturedImage data={itemDetails.imageId} />
+      <section className="container">
+        <div className="row">
+          <div className="col-7 pr-5">
+            <Fade bottom>
+              <PageDetailDescription data={itemDetails} />
+            </Fade>
+          </div>
+          <div className="col-5">
+            <Fade bottom>
+              <BookingForm
+                itemDetails={itemDetails}
+                startBooking={checkoutBooking}
+              />
+            </Fade>
+          </div>
+        </div>
+      </section>
+
+      <Categories data={itemDetails.categoryId} />
+      <Testimony data={itemDetails.testimonial} />
+      <Footer />
+    </>
+  )
 }
 
-export default connect(null, { checkoutBooking })(DetailsPage)
+export default DetailsPage
