@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import Header from 'components/Header'
 import Fade from 'react-reveal/Fade'
+import { connect } from 'react-redux'
+
 import Button from '@core/components/Button'
 import Stepper, {
   Numbering,
@@ -9,13 +11,14 @@ import Stepper, {
   MainContent,
   Controller
 } from '@core/components/Stepper'
+
 import BookingInformation from 'components/Checkout/BookingInformation'
 import Payment from 'components/Checkout/Payment'
 import Completed from 'components/Checkout/Completed'
 
 import ItemDetails from 'json/itemDetails.json'
 
-export default class Checkout extends Component {
+class Checkout extends Component {
   state = {
     data: {
       firstName: '',
@@ -43,9 +46,31 @@ export default class Checkout extends Component {
 
   render() {
     const { data } = this.state
+    const { checkout } = this.props
 
-    const checkout = {
-      duration: 3
+    if (!checkout) {
+      return (
+        <div className="container">
+          <div
+            className="d-flex justify-content-center align-items-center text-center"
+            style={{ height: '100vh' }}
+          >
+            <div className="col-3">
+              Silakan Pilih Kamar Dulu
+              <div>
+                <Button
+                  type="link"
+                  className="mt-5 px-4 btn"
+                  href="/"
+                  isPrimary
+                >
+                  Back
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
     }
 
     const steps = {
@@ -79,6 +104,7 @@ export default class Checkout extends Component {
         content: <Completed />
       }
     }
+
     return (
       <>
         <Header isCentered />
@@ -177,3 +203,9 @@ export default class Checkout extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  checkout: state.checkout
+})
+
+export default connect(mapStateToProps)(Checkout)

@@ -147,20 +147,6 @@ section {
     height: 500px;
 }
 
-@media screen and (max-width: $screen-lg) {
-  .lg-remove {
-    display: none;
-  }
-}
-
-@media screen and (max-width: $screen-md) {
-  .md-d-inline {
-    display: inline;
-    margin-left: 15px;
-    margin-bottom: 25px;
-  }
-}
-
 main {
   p {
     color: $gray-500;
