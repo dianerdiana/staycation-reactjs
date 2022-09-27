@@ -4,6 +4,8 @@ import propTypes from 'prop-types'
 
 import Button from '@core/components/Button'
 import { InputNumber, InputDate } from '@core/components/Form'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const usePrevious = (value) => {
   const ref = useRef()
@@ -25,6 +27,8 @@ const BookingForm = (props) => {
     }
   })
   const prevState = usePrevious(state)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   // vars
   const { data } = state
@@ -43,14 +47,18 @@ const BookingForm = (props) => {
   const startBooking = () => {
     const { data } = state
 
-    props.startBooking({
-      _id: props.itemDetails._id,
-      duration: data.duration,
-      date: {
-        startDate: data.date.startDate,
-        endDate: data.date.endDate
-      }
-    })
+    dispatch(
+      props.startBooking({
+        _id: props.itemDetails._id,
+        duration: data.duration,
+        date: {
+          startDate: data.date.startDate,
+          endDate: data.date.endDate
+        }
+      })
+    )
+
+    navigate('/checkout')
   }
 
   useEffect(() => {
@@ -127,8 +135,6 @@ const BookingForm = (props) => {
 
       <Button
         className="btn"
-        type="link"
-        href="/checkout"
         hasShadow
         isPrimary
         isBlock
