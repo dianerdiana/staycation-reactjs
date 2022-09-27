@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import Header from 'components/Header'
 import Fade from 'react-reveal/Fade'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Button from '@core/components/Button'
 import Stepper, {
@@ -18,7 +18,9 @@ import Completed from 'components/Checkout/Completed'
 
 import ItemDetails from 'json/itemDetails.json'
 
-const Checkout = (props) => {
+import { submitBooking } from 'store/actions/checkout'
+
+const Checkout = () => {
   const [state, setState] = useState({
     data: {
       firstName: '',
@@ -31,6 +33,11 @@ const Checkout = (props) => {
     }
   })
 
+  const dispatch = useDispatch()
+  const checkout = useSelector((state) => state.checkout)
+  const itemDetails = useSelector((state) => state.page.detailPage)
+  const { data } = state
+
   const onChange = (e) => {
     setState({
       data: {
@@ -39,8 +46,6 @@ const Checkout = (props) => {
       }
     })
   }
-  const { data } = state
-  const { checkout } = props
 
   const steps = {
     bookingInformation: {
@@ -50,7 +55,7 @@ const Checkout = (props) => {
         <BookingInformation
           data={data}
           checkout={checkout}
-          ItemDetails={ItemDetails}
+          ItemDetails={itemDetails}
           onChange={onChange}
         />
       )
@@ -62,7 +67,7 @@ const Checkout = (props) => {
         <Payment
           data={data}
           checkout={checkout}
-          ItemDetails={ItemDetails}
+          ItemDetails={itemDetails}
           onChange={onChange}
         />
       )
@@ -72,6 +77,26 @@ const Checkout = (props) => {
       description: null,
       content: <Completed />
     }
+  }
+
+  const handleSubmit = (nextStep) => {
+    const payload = new FormData()
+
+    payload.append('firstName', data.firstName)
+    payload.append('lastName', data.lastName)
+    payload.append('email', data.email)
+    payload.append('phoneNumber', data.phone)
+    payload.append('itemId', checkout._id)
+    payload.append('duration', checkout.duration)
+    payload.append('bookingStartDate', checkout.date.startDate)
+    payload.append('bookingEndDate', checkout.date.endDate)
+    payload.append('accountHolder', data.bankHolder)
+    payload.append('bankFrom', data.bankName)
+    payload.append('image', data.proofPayment[0])
+
+    dispatch(submitBooking(payload)).then(() => {
+      nextStep()
+    })
   }
 
   if (!checkout) {
@@ -153,7 +178,7 @@ const Checkout = (props) => {
                         isBlock
                         isPrimary
                         hasShadow
-                        onClick={nextStep}
+                        onClick={() => handleSubmit(nextStep)}
                       >
                         Continue to Book
                       </Button>
@@ -192,8 +217,4 @@ const Checkout = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  checkout: state.checkout
-})
-
-export default connect(mapStateToProps)(Checkout)
+export default Checkout
