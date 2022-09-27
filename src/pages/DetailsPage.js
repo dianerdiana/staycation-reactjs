@@ -33,7 +33,9 @@ const DetailsPage = (props) => {
   ]
 
   useEffect(() => {
-    document.title = `Details Page | ${itemDetails?.title}`
+    document.title = `Details Page | ${
+      itemDetails?.title ? itemDetails.title : 'Vacation'
+    }`
     setLoading(true)
     dispatch(fetchPage(`/detail-page/${id}`, 'detailPage')).then(() =>
       setLoading(false)
