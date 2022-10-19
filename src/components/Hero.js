@@ -28,7 +28,7 @@ export default function Hero(props) {
     <Fade bottom>
       <section className="container pt-4">
         <div className="row align-items-center">
-          <div className="col-auto pr-5" style={{ width: '500px' }}>
+          <div className="col-12 col-lg-auto pr-5" style={{ width: '500px' }}>
             <h1 className="font-weight-bold line-height-1 mb-1">
               Forget Busy Work, <br />
               Start Next Vacation
@@ -104,19 +104,19 @@ export default function Hero(props) {
             </div>
           </div>
 
-          <div className="col-6 pl-5 lg-remove">
-            <div style={{ width: '520px', height: '410px' }}>
+          <div className="col-12 col-lg-6 pl-5">
+            <div className='hero-image-placeholder'>
               <img
                 src={ImageHero}
                 alt="Room with chouches"
                 className="img-fluid position-absolute"
-                style={{ margin: '-30px 0 0 -30px', zIndex: 1 }}
+                style={{ margin: '-30px 0 0 -30px', zIndex: 2 }}
               />
               <img
                 src={ImageHeroFrame}
                 alt="Room with chouches frame"
                 className="img-fluid position-absolute"
-                style={{ margin: '0 -15px -15px 0' }}
+                style={{ margin: '0 -15px -15px 0'  }}
               />
             </div>
           </div>

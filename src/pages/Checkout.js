@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Header from 'components/Header'
 import Fade from 'react-reveal/Fade'
@@ -98,6 +98,10 @@ const Checkout = () => {
       nextStep()
     })
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [dispatch])
 
   if (!checkout) {
     return (

@@ -9,7 +9,6 @@ import FeaturedImage from 'components/FeaturedImage'
 import PageDetailDescription from 'components/PageDetailDescription'
 import BookingForm from 'components/BookingForm'
 
-import ItemDetails from 'json/itemDetails.json'
 import Categories from 'components/Categories'
 import Testimony from 'components/Testimony'
 import Footer from 'components/Footer'
@@ -40,7 +39,9 @@ const DetailsPage = (props) => {
     dispatch(fetchPage(`/detail-page/${id}`, 'detailPage')).then(() =>
       setLoading(false)
     )
-  }, [])
+
+    window.scrollTo(0, 0)
+  }, [dispatch, id, itemDetails.title])
 
   if (loading) {
     return <div className="spinner"></div>

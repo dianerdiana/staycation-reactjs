@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
 
 // ** Import components
 import Header from '../components/Header'
@@ -26,7 +25,9 @@ const LandingPage = (props) => {
     dispatch(fetchPage('/landing-page', 'landingPage'))
       .then((res) => setLandingPage(res))
       .finally(() => setLoading(false))
-  }, [])
+    
+    window.scrollTo(0, 0)
+  }, [dispatch])
 
   if (loading) {
     return <div className="spinner"></div>
